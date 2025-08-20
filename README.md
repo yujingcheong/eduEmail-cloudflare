@@ -1,19 +1,105 @@
-# 先打个广告
-我的另一个项目*AI公众号自动发文助手：https://github.com/wojiadexiaoming-copy/AIWeChatauto.git
+# 📧 临时邮箱生成器 - eduEmail-cloudflare
 
-# 已部署的链接：<img width="416" height="380" alt="微信图片_2025-06-09_185727_669" src="https://github.com/user-attachments/assets/601f37cd-f508-4548-9cab-37f746881653" />
-【原链接被攻打了，现在改成小程序日限制5次，生成失败再次点击一下就好，网络延迟导致。
-<img width="301" height="382" alt="63c080bc3f8ba087a7889f0a9f83df95" src="https://github.com/user-attachments/assets/e1a2a958-a581-41fc-a1df-6e8b56f6cf5f" />
-】
+> 🚀 一键生成安全的临时邮箱地址，基于 Cloudflare Workers + UniCloud 的完整解决方案
 
-# 编程软件多开器
-（多软件同时打开，多账号登录，不同步项目、机器ID、账号登缓存，可实现cursor本账号在本机使用多次试用账号的问题）
-https://www.douyin.com/user/self?modal_id=7539884476013301007
-https://github.com/wojiadexiaoming-copy/cursor_vip
+## 🎯 快速开始
 
-# 完整的Augmet注册教程 https://mp.weixin.qq.com/s/dZVp-ccPFm771CfCTkrL_w
+| 🔗 快速链接 | 📝 说明 | ⏱️ 预计时间 |
+|------------|--------|------------|
+| **[🌟 项目概览](./PROJECT_OVERVIEW.md)** | 了解项目特性、架构和优势 | 3分钟 |
+| **[📖 详细设置流程](./SETUP_GUIDE.md)** | 完整的分步设置指南，包含所有必要链接 | 45分钟 |
+| **[⚡ 快速检查清单](./QUICK_CHECKLIST.md)** | 一页纸设置检查清单，适合快速参考 | 5分钟 |
+| **[🔧 故障排查指南](./TROUBLESHOOTING.md)** | 常见问题解决方案 | 按需阅读 |
+| **[🌐 Cloudflare Dashboard](https://dash.cloudflare.com/)** | 配置域名、API Token、Workers | 15分钟 |
+| **[☁️ UniCloud 控制台](https://unicloud.dcloud.net.cn/)** | 部署云函数、管理数据库 | 20分钟 |
+| **[🔧 API Token 创建](https://dash.cloudflare.com/profile/api-tokens)** | 直达 API Token 创建页面 | 2分钟 |
 
-# 临时邮箱生成器 - 完整部署指南
+## 📊 系统架构流程
+
+```mermaid
+graph TD
+    A[👤 用户访问前端] --> B[📧 点击生成邮箱]
+    B --> C[☁️ UniCloud 云函数]
+    C --> D[🌐 Cloudflare API]
+    D --> E[📮 创建邮件路由]
+    E --> F[✅ 返回临时邮箱地址]
+    
+    G[📧 外部邮件发送] --> H[🔄 Cloudflare 邮件路由]
+    H --> I[⚡ Cloudflare Workers]
+    I --> J[💾 解析邮件内容]
+    J --> K[☁️ 回调 UniCloud]
+    K --> L[🗄️ 存储到数据库]
+    
+    M[👤 用户查看邮件] --> N[☁️ 查询云函数]
+    N --> O[🗄️ 从数据库获取]
+    O --> P[📱 前端显示邮件]
+```
+
+## 🏗️ 项目特性
+
+- ✅ **一键生成** - 即时创建临时邮箱地址
+- ✅ **实时接收** - 自动接收并解析邮件内容  
+- ✅ **安全可靠** - 基于 Cloudflare 企业级基础设施
+- ✅ **无需注册** - 无需提供真实邮箱或个人信息
+- ✅ **支持格式** - HTML 和纯文本邮件完美支持
+- ✅ **批量管理** - 支持查看、删除多个临时邮箱
+- ✅ **响应式** - 完美适配桌面端和移动端
+
+## 📱 已部署示例
+
+### 微信小程序版本（推荐）
+<img width="301" height="382" alt="小程序二维码" src="https://github.com/user-attachments/assets/e1a2a958-a581-41fc-a1df-6e8b56f6cf5f" />
+
+> ⚠️ 注意：小程序版本每日限制5次生成，如生成失败请再次点击（网络延迟导致）
+
+### Web 版本
+<img width="416" height="380" alt="Web版本界面" src="https://github.com/user-attachments/assets/601f37cd-f508-4548-9cab-37f746881653" />
+
+## 🚀 快速部署流程
+
+### 方式一：完整自部署 ⭐ 推荐
+按照 **[详细设置流程指南](./SETUP_GUIDE.md)** 进行完整部署，大约需要 45 分钟，但可以完全自主控制。
+
+### 方式二：小程序快速体验
+扫描上方小程序二维码，立即体验功能（每日限制5次）。
+
+---
+
+## 🛠️ 相关项目
+
+### 编程工具推荐
+- **AI公众号自动发文助手**：[AI写作自动化工具](https://github.com/wojiadexiaoming-copy/AIWeChatauto.git)
+- **编程软件多开器**：[Cursor等IDE多开工具](https://github.com/wojiadexiaoming-copy/cursor_vip) | [演示视频](https://www.douyin.com/user/self?modal_id=7539884476013301007)
+
+### 教程资源
+- **Augment 注册教程**：[完整图文教程](https://mp.weixin.qq.com/s/dZVp-ccPFm771CfCTkrL_w)
+
+## 📋 完整部署指南
+
+> 👥 **适合人群**：有一定技术基础，希望完全掌控系统的用户
+
+### 📚 文档导航
+
+| 📄 文档 | 🎯 适用场景 | ⏱️ 阅读时间 |
+|---------|------------|------------|
+| **[📖 详细设置流程](./SETUP_GUIDE.md)** | 第一次部署，需要详细指导 | 10-15分钟 |
+| **[⚡ 快速检查清单](./QUICK_CHECKLIST.md)** | 快速参考，确认设置步骤 | 2-3分钟 |
+| **[🔧 故障排查指南](./TROUBLESHOOTING.md)** | 遇到问题时查阅 | 按需阅读 |
+| **[📋 下方技术文档](#技术实现详情)** | 了解技术细节和原理 | 5-10分钟 |
+
+### 🛠️ 核心服务快速访问
+
+| 🔗 服务入口 | 📝 主要功能 | 💡 使用提示 |
+|------------|------------|------------|
+| **[Cloudflare Dashboard](https://dash.cloudflare.com/)** | 域名、DNS、Workers 管理 | 建议保持登录状态 |
+| **[API Token 管理](https://dash.cloudflare.com/profile/api-tokens)** | 创建和管理 API 访问权限 | 妥善保存生成的 Token |
+| **[Workers 控制台](https://dash.cloudflare.com/workers)** | 部署和管理邮件处理脚本 | 注意查看执行日志 |
+| **[UniCloud 腾讯云](https://console.cloud.tencent.com/tcb)** | 云函数和数据库管理 | 推荐版本，稳定性好 |
+| **[UniCloud DCloud](https://unicloud.dcloud.net.cn/)** | 备选云函数平台 | 可选择阿里云版本 |
+
+---
+
+# 📋 技术实现详情
 
 ## 项目概述
 
