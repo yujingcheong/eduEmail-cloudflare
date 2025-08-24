@@ -1,7 +1,7 @@
 // Supabase 配置 - 请替换为你的实际配置
 const SUPABASE_CONFIG = {
-    url: 'https://your-project.supabase.co',
-    anonKey: 'your-supabase-anon-key'
+    url: "https://awnryunuwuwdqvrtlpam.supabase.co",
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3bnJ5dW51d3V3ZHF2cnRscGFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4MDM1OTcsImV4cCI6MjA3MTM3OTU5N30.bxifI4ILcaFsIyOrHzkOF640wFKj7p2bQKCU4ALASlc"
 };
 
 // Supabase Edge Function URLs
@@ -678,3 +678,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log('响应式优化和无障碍功能已初始化');
 });
+
