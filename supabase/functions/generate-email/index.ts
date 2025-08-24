@@ -4,10 +4,22 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+// Dynamically generate allowed origins
+const ALLOWED_ORIGINS = [
+  'https://turbo-barnacle-g44x77pvj5x9f9ggp-5500.app.github.dev',
+  'http://localhost:5500',
+  'https://localhost:5500'
+];
+
+function getCorsHeaders(origin: string | null) {
+  return {
+    'Access-Control-Allow-Origin': 
+      origin && ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
+    'Access-Control-Allow-Headers': 
+      'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Vary': 'Origin'
+  };
 }
 
 // Configuration (move to environment variables)
@@ -105,9 +117,16 @@ class CloudflareAPI {
 }
 
 serve(async (req) => {
+  // Get the origin from the request
+  const origin = req.headers.get('origin');
+  const corsHeaders = getCorsHeaders(origin);
+
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response(null, { 
+      headers: corsHeaders,
+      status: 204
+    });
   }
 
   try {
@@ -162,7 +181,7 @@ serve(async (req) => {
     return new Response(JSON.stringify(responseData), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 200,
-    })
+    });
 
   } catch (error) {
     console.error('=== Edge Function 执行失败 ===');
@@ -175,6 +194,66 @@ serve(async (req) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 500,
-    })
+    });
   }
-})
+});
+
+// Example front-end function to call the Edge Function
+export async function generateEmail() {
+  try {
+    console.log('=== 开始生成邮箱 ===');
+    
+    const response = await fetch(
+      'https://awnryunuwuwdqvrtlpam.supabase.co/functions/v1/generate-email', 
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+      }
+    );
+
+    console.log('响应状态:', response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('错误响应内容:', errorText);
+      throw new Error(`HTTP错误 ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    
+    console.log('生成邮箱响应:', data);
+
+    if (!data.success) {
+      throw new Error(data.error || '邮箱生成失败');
+    }
+
+    return data; 
+
+  } catch (error) {
+    console.error('=== 前端执行失败 ===');
+    console.error('错误详情:', error);
+    console.error('错误类型:', error.constructor.name);
+    console.error('错误消息:', error.message);
+
+    // 详细的错误处理
+    let userFriendlyMessage = '网络连接失败，请检查网络或稍后重试';
+    
+    if (error.message.includes('Failed to fetch')) {
+      userFriendlyMessage = '无法连接到服务器，请检查网络连接';
+    } else if (error.message.includes('HTTP错误')) {
+      userFriendlyMessage = '服务器返回错误，请稍后重试';
+    }
+
+    // 可以在这里添加更多具体的错误类型处理
+
+    throw { 
+      email: null, 
+      timestamp: Date.now(), 
+      success: false, 
+      error: userFriendlyMessage 
+    };
+  }
+}
