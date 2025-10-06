@@ -1,53 +1,196 @@
-# 先打个广告
-我的另一个项目*AI公众号自动发文助手：https://github.com/wojiadexiaoming-copy/AIWeChatauto.git
+# 临时邮箱生成器 - Supabase版本
 
-# 已部署的链接：<img width="416" height="380" alt="微信图片_2025-06-09_185727_669" src="https://github.com/user-attachments/assets/601f37cd-f508-4548-9cab-37f746881653" />
-【原链接被攻打了，现在改成小程序日限制5次，生成失败再次点击一下就好，网络延迟导致。
-<img width="301" height="382" alt="63c080bc3f8ba087a7889f0a9f83df95" src="https://github.com/user-attachments/assets/e1a2a958-a581-41fc-a1df-6e8b56f6cf5f" />
-】
+## 🎯 项目概述
 
-# 编程软件多开器
-（多软件同时打开，多账号登录，不同步项目、机器ID、账号登缓存，可实现cursor本账号在本机使用多次试用账号的问题）
-https://www.douyin.com/user/self?modal_id=7539884476013301007
-https://github.com/wojiadexiaoming-copy/cursor_vip
+这是一个基于 **Supabase Edge Functions** + **Cloudflare Workers** 的现代化临时邮箱生成器，已从 UniCloud 迁移到 Supabase 平台。
 
-# 完整的Augmet注册教程 https://mp.weixin.qq.com/s/dZVp-ccPFm771CfCTkrL_w
+### ✨ 主要功能
+- 🔄 自动生成临时邮箱地址
+- 📧 实时接收和解析邮件
+- 📖 邮件内容查看和管理
+- 🗑️ 批量删除邮箱和邮件
+- 🚀 基于现代 TypeScript/Deno 运行时
 
-# 临时邮箱生成器 - 完整部署指南
+## 🏗️ 系统架构
 
-## 项目概述
-
-这是一个基于 Cloudflare Workers + UniCloud 云函数的临时邮箱生成器项目，支持：
-- 自动生成临时邮箱地址
-- 实时接收和解析邮件
-- 邮件内容查看和管理
-- 批量删除邮箱和邮件
-
-## 系统架构
-
-```
-前端 (HTML/CSS/JS) 
-    ↓
-UniCloud 云函数 (Node.js)
-    ↓
-Cloudflare Workers (邮件处理)
-    ↓
-Cloudflare Email Routing (邮件路由)
+```mermaid
+graph TD
+    A[前端 React/HTML] --> B[Supabase Edge Functions]
+    B --> C[PostgreSQL 数据库]
+    B --> D[Cloudflare Workers]
+    D --> E[Cloudflare Email Routing]
+    E --> F[邮件接收处理]
+    F --> B
 ```
 
-## 部署前准备
+## 🆕 Supabase 迁移亮点
 
-### 1. 域名准备
-- 需要一个域名
-- 域名需要托管在 Cloudflare 上
+### 从 UniCloud 到 Supabase 的优势：
+- ✅ **现代化技术栈**：TypeScript + Deno 替代 Node.js
+- ✅ **更好的性能**：PostgreSQL + 优化索引
+- ✅ **实时功能**：内置 WebSocket 支持（未来可扩展）
+- ✅ **更好的监控**：详细的日志和指标
+- ✅ **更低的成本**：更透明的价格模型
+- ✅ **更强的安全性**：Row Level Security (RLS)
 
-### 2. 账号准备
-- Cloudflare 账号
-- UniCloud 账号（阿里云/腾讯云/支付宝云）
+## 🚀 快速开始
 
-## 第一步：Cloudflare 配置
+### 方式1：使用现有部署 (推荐体验)
 
-### 1.1 获取 Cloudflare API Token
+访问已部署的版本：[在线体验](your-deployed-url)
+
+### 方式2：自己部署 (完整控制)
+
+按照我们的详细部署指南：
+
+1. **📖 [Supabase 部署指南](SUPABASE_DEPLOYMENT.md)** - 完整的部署步骤
+2. **⚙️ [前端配置指南](FRONTEND_CONFIG.md)** - 前端设置说明  
+3. **🧪 [测试指南](TESTING_GUIDE.md)** - 验证功能是否正常
+
+## 📋 部署前准备
+
+### 必需账号
+- [Supabase 账号](https://supabase.com) (免费额度充足)
+- [Cloudflare 账号](https://cloudflare.com) (免费版即可)
+- 一个域名 (托管在 Cloudflare)
+
+### 技术要求
+- Node.js 16+ 
+- Supabase CLI
+- 基础的 SQL 和 JavaScript 知识
+
+## 🏃‍♂️ 快速部署步骤
+
+### 1. 设置 Supabase 项目
+```bash
+# 创建新项目并获取 URL 和 API 密钥
+# 在 Supabase Dashboard 完成
+```
+
+### 2. 部署数据库架构
+```sql
+-- 运行 supabase/migrations/001_initial_schema.sql
+-- 在 Supabase SQL Editor 中执行
+```
+
+### 3. 部署 Edge Functions
+```bash
+npm install -g supabase
+supabase link --project-ref your-project
+supabase functions deploy
+```
+
+### 4. 配置前端
+```javascript
+// 更新 前端/script.js 中的配置
+const SUPABASE_CONFIG = {
+    url: 'https://your-project.supabase.co',
+    anonKey: 'your-anon-key'
+};
+```
+
+### 5. 测试功能
+按照 [测试指南](TESTING_GUIDE.md) 验证所有功能正常工作。
+
+## 📁 项目结构
+
+```
+eduEmail-cloudflare/
+├── supabase/
+│   ├── functions/                 # Edge Functions (TypeScript)
+│   │   ├── generate-email/
+│   │   ├── post-cloudflare-email/
+│   │   ├── get-cloudflare-email/
+│   │   ├── get-all-temp-emails/
+│   │   └── delete-temp-email/
+│   └── migrations/               # 数据库迁移
+│       └── 001_initial_schema.sql
+├── 前端/                          # 前端文件
+│   ├── index.html
+│   ├── script.js                 # 已更新支持 Supabase
+│   └── style.css
+├── cloudfare-workers后端/         # Cloudflare Workers
+├── SUPABASE_DEPLOYMENT.md        # 部署指南
+├── TESTING_GUIDE.md             # 测试指南
+├── FRONTEND_CONFIG.md           # 前端配置
+└── .env.example                 # 环境变量示例
+```
+
+## 🔧 API 端点
+
+### Supabase Edge Functions
+- `POST /functions/v1/generate-email` - 生成临时邮箱
+- `POST /functions/v1/get-cloudflare-email` - 获取邮件
+- `POST /functions/v1/delete-temp-email` - 删除邮箱
+- `POST /functions/v1/get-all-temp-emails` - 获取所有邮箱
+- `POST /functions/v1/post-cloudflare-email` - 存储邮件 (Worker 调用)
+
+## 🔐 安全特性
+
+- **Row Level Security (RLS)**：数据库级别的权限控制
+- **API 密钥管理**：分离的匿名和服务角色密钥
+- **CORS 配置**：防止跨站请求伪造
+- **环境变量**：敏感配置安全存储
+
+## 📊 监控和日志
+
+### Supabase Dashboard
+- Edge Function 调用日志
+- 数据库查询性能
+- 实时指标监控
+- 错误报告和警报
+
+### Cloudflare Dashboard  
+- Worker 执行日志
+- 邮件路由状态
+- API 调用统计
+
+## 🐛 故障排除
+
+### 常见问题
+1. **CORS 错误** - 检查 Supabase CORS 设置
+2. **认证失败** - 验证 API 密钥配置
+3. **邮件接收失败** - 检查 Cloudflare 邮件路由
+4. **函数超时** - 增加函数超时设置
+
+详细解决方案请参考 [测试指南](TESTING_GUIDE.md)。
+
+## 🤝 贡献指南
+
+我们欢迎贡献！请遵循以下步骤：
+
+1. Fork 项目
+2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 开启 Pull Request
+
+## 📞 获取帮助
+
+- 📖 **文档**：查看我们的详细指南
+- 🐛 **Bug 报告**：[提交 Issue](https://github.com/yujingcheong/eduEmail-cloudflare/issues)
+- 💡 **功能建议**：[讨论区](https://github.com/yujingcheong/eduEmail-cloudflare/discussions)
+- 📧 **直接联系**：[开发者邮箱]
+
+## 📄 许可证
+
+本项目采用 MIT 许可证 - 详见 [LICENSE](LICENSE) 文件。
+
+## 🙏 致谢
+
+- [Supabase](https://supabase.com) - 现代化的后端即服务平台
+- [Cloudflare](https://cloudflare.com) - 邮件路由和 Workers 服务  
+- 原 UniCloud 版本的所有贡献者
+
+---
+
+## 🔄 迁移说明
+
+如果你正在从旧的 UniCloud 版本迁移，请查看：
+- [迁移指南](MIGRATION_GUIDE_SUPABASE.md) - 详细的迁移步骤
+- [部署指南](SUPABASE_DEPLOYMENT.md) - 新版本部署
+
+**迁移后你将获得更现代、更可靠、更易维护的系统！**
 
 1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)
 2. 点击右上角头像 → "My Profile"

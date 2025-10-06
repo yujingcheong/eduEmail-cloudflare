@@ -1,3 +1,24 @@
+// Supabase 配置 - 请替换为你的实际配置
+const SUPABASE_CONFIG = {
+    url: "https://awnryunuwuwdqvrtlpam.supabase.co",
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3bnJ5dW51d3V3ZHF2cnRscGFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4MDM1OTcsImV4cCI6MjA3MTM3OTU5N30.bxifI4ILcaFsIyOrHzkOF640wFKj7p2bQKCU4ALASlc"
+};
+
+// Supabase Edge Function URLs
+const API_ENDPOINTS = {
+    generateEmail: `${SUPABASE_CONFIG.url}/functions/v1/generate-email`,
+    getEmail: `${SUPABASE_CONFIG.url}/functions/v1/get-cloudflare-email`,
+    getAllEmails: `${SUPABASE_CONFIG.url}/functions/v1/get-all-temp-emails`,
+    deleteEmail: `${SUPABASE_CONFIG.url}/functions/v1/delete-temp-email`
+};
+
+// 通用请求头
+const getHeaders = () => ({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${SUPABASE_CONFIG.anonKey}`,
+    'apikey': SUPABASE_CONFIG.anonKey
+});
+
 // 全局变量存储当前生成的邮箱
 let currentEmail = null;
 
@@ -49,11 +70,9 @@ async function generateEmail() {
         const requestBody = {};
         console.log('请求体:', JSON.stringify(requestBody, null, 2));
 
-        const response = await fetch('云函数链接generate-email', {
+        const response = await fetch(API_ENDPOINTS.generateEmail, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: getHeaders(),
             body: JSON.stringify(requestBody)
         });
 
@@ -206,11 +225,9 @@ async function clearCurrentEmail() {
         };
         console.log('请求体:', JSON.stringify(requestBody, null, 2));
 
-        const response = await fetch('云函数链接Delete_edu_cloudfare', {
+        const response = await fetch(API_ENDPOINTS.deleteEmail, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: getHeaders(),
             body: JSON.stringify(requestBody)
         });
 
@@ -378,11 +395,9 @@ async function viewLatestEmail() {
         };
         console.log('请求体:', JSON.stringify(requestBody, null, 2));
 
-        const response = await fetch('云函数链接GET_cloudflare_edukg_email', {
+        const response = await fetch(API_ENDPOINTS.getEmail, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: getHeaders(),
             body: JSON.stringify(requestBody)
         });
 
@@ -563,7 +578,9 @@ function handleOrientationChange() {
 
 // 页面加载完成后的初始化
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('临时邮箱生成器已加载');
+    console.log('临时邮箱生成器已加载 - 使用Supabase Edge Functions');
+    console.log('Supabase URL:', SUPABASE_CONFIG.url);
+    console.log('API Endpoints:', API_ENDPOINTS);
 
     // 检查是否有保存的邮箱
     const savedEmail = localStorage.getItem('tempEmail');
@@ -661,3 +678,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log('响应式优化和无障碍功能已初始化');
 });
+
